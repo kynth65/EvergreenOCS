@@ -1,26 +1,39 @@
 import { createBrowserRouter, Navigate } from "react-router-dom";
-
 import Homepage from "./pages/HomePage";
 import GuestLayout from "./layouts/GuestLayout";
 import OCSCalculator from "./pages/OCSCalculator";
 import OCSResult from "./pages/OCSResult";
+import ProtectedRoute from "./components/ProtectedRoute";
+import { AuthProvider } from "./context/AuthContext";
 
 const router = createBrowserRouter([
     {
         path: "/",
-        element: <GuestLayout />,
+        element: (
+            <AuthProvider>
+                <GuestLayout />
+            </AuthProvider>
+        ),
         children: [
             {
-                path: "", // This is correct for home page
+                path: "",
                 element: <Homepage />,
             },
             {
                 path: "/OCSCalculator",
-                element: <OCSCalculator />,
+                element: (
+                    <ProtectedRoute>
+                        <OCSCalculator />
+                    </ProtectedRoute>
+                ),
             },
             {
                 path: "/OCSResult",
-                element: <OCSResult />,
+                element: (
+                    <ProtectedRoute>
+                        <OCSResult />
+                    </ProtectedRoute>
+                ),
             },
         ],
     },
